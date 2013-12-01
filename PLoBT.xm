@@ -75,7 +75,7 @@ static float space;
 	if (![NSStringFromClass([button class]) isEqualToString:@"PLCameraVideoStillCaptureButton"]) {
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 			space = 10.0f + (IPAD ? 2.0f : 0.0f);
-			if (orientation <= 2) {
+			if (orientation == 1 || orientation == 2) {
 				if (self.frame.origin.x > [self superview].frame.size.width - self.frame.size.width - space) {
 					[UIView animateWithDuration:0.1 animations:^{
     					self.frame = CGRectMake([self superview].frame.size.width - self.frame.size.width - space, button.frame.origin.y, button.frame.size.width, button.frame.size.height);
@@ -86,7 +86,7 @@ static float space;
     					self.frame = CGRectMake(space, button.frame.origin.y, button.frame.size.width, button.frame.size.height);
 					}];
 				}
-				else if (self.frame.origin.y > [self superview].frame.size.height - self.frame.size.height - space) {
+				if (self.frame.origin.y > [self superview].frame.size.height - self.frame.size.height - space) {
 					[UIView animateWithDuration:0.1 animations:^{
     					self.frame = CGRectMake(button.frame.origin.x, [self superview].frame.size.height - self.frame.size.height - space, button.frame.size.width, button.frame.size.height);
 					}];
@@ -108,7 +108,7 @@ static float space;
     					self.frame = CGRectMake(space, button.frame.origin.y, button.frame.size.width, button.frame.size.height);
 					}];
 				}
-				else if (self.frame.origin.y > [self superview].frame.size.width - self.frame.size.height - space) {
+				if (self.frame.origin.y > [self superview].frame.size.width - self.frame.size.height - space) {
 					[UIView animateWithDuration:0.1 animations:^{
     					self.frame = CGRectMake(button.frame.origin.x, [self superview].frame.size.width - self.frame.size.height - space, button.frame.size.width, button.frame.size.height);
 					}];
