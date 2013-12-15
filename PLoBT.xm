@@ -46,7 +46,7 @@ static float space;
 	PLCameraView *view = (PLCameraView *)[[self superview] superview];
 	PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(view, "_optionsButton");
     if (!CGRectIntersectsRect(((UIView *)optionsButton).frame, [self frame]))
-    	[view _setSettingsButtonAlpha:1.0 duration:0.0];
+	   	[view _setSettingsButtonAlpha:1.0 duration:0.0];
 }
 
 %end
