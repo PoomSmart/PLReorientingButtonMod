@@ -1,0 +1,9 @@
+Package: org.thebigboss.plobt
+Name: Reorienting Button Mod
+Depends: mobilesubstrate, preferenceloader, gsc.still-camera, firmware (>= 6.0), firmware (<< 7.0)
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Some modification for the translucent grey buttons in Camera app.
+Author: PoomSmart
+Section: Tweaks
+Icon: file:///Library/PreferenceLoader/Preferences/PLoBT/PLoBT@2x.png

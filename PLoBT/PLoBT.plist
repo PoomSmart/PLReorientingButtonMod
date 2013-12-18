@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>title</key>
+    <string>Reorienting Button Mod</string>
+    <key>entry</key>
+    <dict>
+      <key>cell</key>
+      <string>PSLinkCell</string>
+      <key>icon</key>
+      <string>PLoBT.png</string>
+      <key>label</key>
+      <string>Reorienting Button Mod</string>
+    </dict>
+    <key>items</key>
+    <array>
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <false/>
+        <key>defaults</key>
+        <string>com.PS.PLoBT</string>
+        <key>key</key>
+        <string>draggable</string>
+        <key>label</key>
+        <string>Button is draggable</string>
+        <key>PostNotification</key>
+		<string>com.PS.PLoBT.prefs</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+      	<string>Button Opacity</string>
+        <key>footerText</key>
+        <string>Opacity from 0.0 - 1.0
+
+For users, this tweak covers some feature requested by users. To make buttons draggable, and to set buttons opacity to make camera looks nice with TransparentCameraBar tweak installed.
+
+For developers, this tweak plays with a cool type of button in camera app called "PLReorientingButton" (Existed in iOS 5 and 6, not 7), by setting their opacity and adding ability to drag them over the screen. (You can find this method as well in Record 'n' Torch and Still Capture Enabler 2 tweak) You may check out this tweak source code at my GitHub. (Account name PoomSmart)
+
+Issue: Enabling this tweak in iMessages camera and something like that causes the crash.</string>
+      </dict>
+      <dict>
+			<key>PostNotification</key>
+			<string>com.PS.PLoBT.prefs</string>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>1.0</real>
+			<key>defaults</key>
+			<string>com.PS.PLoBT</string>
+			<key>key</key>
+			<string>opacity</string>
+			<key>max</key>
+			<real>1.0</real>
+			<key>min</key>
+			<real>0.0</real>
+			<key>showValue</key>
+			<false/>
+		</dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>footerText</key>
+        <string>© 2013 Thuchapol Unprasert
+(@PoomSmart)</string>
+      </dict>
+    </array>
+  </dict>
+</plist>
