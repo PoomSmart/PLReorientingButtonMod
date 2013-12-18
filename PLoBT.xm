@@ -1,7 +1,13 @@
 #import <UIKit/UIKit.h>
 
+#define PreferencesChangedNotification "com.PS.PLoBT.prefs"
+#define PREF_PATH @"/var/mobile/Library/Preferences/com.PS.PLoBT.plist"
+#define IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
 static BOOL dragged = YES;
+static BOOL draggable;
 static float space;
+static float opacity = 1.0f;
 
 @interface PLReorientingButton : UIButton
 @end
@@ -12,28 +18,54 @@ static float space;
 @interface PLCameraOptionsButton : PLReorientingButton
 @end
 
-@interface PLCameraController
-+ (id)sharedInstance;
-- (int)cameraOrientation;
-@end
-
 @interface PLCameraView
 - (void)_setSettingsButtonAlpha:(float)alpha duration:(double)duration;
-- (int)_glyphOrientationForCameraOrientation:(int)arg1;
 @end
+
+static void PLoBTLoader()
+{
+	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:PREF_PATH];
+	draggable = [[dict objectForKey:@"draggable"] boolValue];
+	opacity = [dict objectForKey:@"opacity"] ? [[dict objectForKey:@"opacity"] floatValue] : 1.0f;
+}
+
+static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
+{
+	system("killall Camera");
+	PLoBTLoader();
+}
+
 
 %hook PLCameraView
 
 - (void)toggleSettings:(id)settings
 {
-	if (dragged)
-		%orig;
+	if (draggable) {
+		if (dragged)
+			%orig;
+		return;
+	}
+	%orig;
 }
 
 - (void)_toggleCameraButtonWasPressed:(id)pressed
 {
-	if (dragged)
-		%orig;
+	if (draggable) {
+		if (dragged)
+			%orig;
+		return;
+	}
+	%orig;
+}
+
+- (void)flashButtonDidCollapse:(id)arg
+{
+	%orig;
+	if (draggable) {
+		PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(self, "_optionsButton");
+		[optionsButton setAlpha:opacity];
+		[optionsButton setEnabled:YES];
+	}
 }
 
 %end
@@ -43,10 +75,12 @@ static float space;
 - (void)_expandAnimated:(BOOL)animated
 {
 	%orig;
-	PLCameraView *view = (PLCameraView *)[[self superview] superview];
-	PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(view, "_optionsButton");
-    if (!CGRectIntersectsRect(((UIView *)optionsButton).frame, [self frame]))
-	   	[view _setSettingsButtonAlpha:1.0 duration:0.0];
+	if (draggable) {
+		PLCameraView *view = (PLCameraView *)[[self superview] superview];
+		PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(view, "_optionsButton");
+		if (!CGRectIntersectsRect(((UIView *)optionsButton).frame, [self frame]))
+			[view _setSettingsButtonAlpha:opacity duration:0.0];
+	}
 }
 
 %end
@@ -57,9 +91,12 @@ static float space;
 {
 	self = %orig;
 	if (self) {
-		space = 10.0f + (IPAD ? 2.0f : 0.0f);
-		[self addTarget:self action:@selector(PLtouchMoved:withEvent:) forControlEvents:UIControlEventTouchDragInside];
-		[self addTarget:self action:@selector(PLfinishedDragging:withEvent:) forControlEvents:UIControlEventTouchDragExit | UIControlEventTouchUpInside];
+		if (draggable) {
+			space = 10.0f + (IPAD ? 2.0f : 0.0f);
+			[self addTarget:self action:@selector(PLtouchMoved:withEvent:) forControlEvents:UIControlEventTouchDragInside];
+			[self addTarget:self action:@selector(PLfinishedDragging:withEvent:) forControlEvents:UIControlEventTouchDragExit | UIControlEventTouchUpInside];
+		}
+		[self setAlpha:opacity];
 	}
 	return self;
 }
@@ -141,3 +178,12 @@ static float space;
 }
 
 %end
+
+
+%ctor {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, PreferencesChangedCallback, CFSTR(PreferencesChangedNotification), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	PLoBTLoader();
+	%init;
+	[pool drain];
+}
