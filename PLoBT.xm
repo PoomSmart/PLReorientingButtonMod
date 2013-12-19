@@ -61,11 +61,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 - (void)flashButtonDidCollapse:(id)arg
 {
 	%orig;
-	if (draggable) {
-		PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(self, "_optionsButton");
-		[optionsButton setAlpha:opacity];
+	PLCameraOptionsButton *optionsButton = MSHookIvar<PLCameraOptionsButton *>(self, "_optionsButton");
+	if (draggable)
 		[optionsButton setEnabled:YES];
-	}
+	[optionsButton setAlpha:opacity];
 }
 
 %end
