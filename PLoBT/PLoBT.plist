@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>title</key>
-    <string>Reorienting Button Mod</string>
+    <string>Camera Button UI Mod</string>
     <key>entry</key>
     <dict>
       <key>cell</key>
@@ -11,7 +11,7 @@
       <key>icon</key>
       <string>PLoBT.png</string>
       <key>label</key>
-      <string>Reorienting Button Mod</string>
+      <string>Camera Button UI Mod</string>
     </dict>
     <key>items</key>
     <array>

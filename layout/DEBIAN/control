@@ -1,5 +1,5 @@
 Package: org.thebigboss.plobt
-Name: Reorienting Button Mod
+Name: Camera Button UI Mod
 Depends: mobilesubstrate, preferenceloader, gsc.still-camera, firmware (>= 6.0), firmware (<< 7.0)
 Version: 1.0
 Architecture: iphoneos-arm
